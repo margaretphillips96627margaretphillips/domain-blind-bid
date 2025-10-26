@@ -8,89 +8,83 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
+    /* Teal Registrar Theme - DomainVault */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
+    --foreground: 192 100% 4%;
+    
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
+    --card-foreground: 192 100% 4%;
+    
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --popover-foreground: 192 100% 4%;
+    
+    /* Primary: Teal #0F766E */
+    --primary: 174 89% 26%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 174 65% 42%;
+    
+    /* Secondary: Dark Teal #012027 */
+    --secondary: 192 98% 8%;
+    --secondary-foreground: 0 0% 100%;
+    
+    /* Accent: Bright Teal #2DD4BF */
+    --accent: 174 72% 56%;
+    --accent-foreground: 192 100% 4%;
+    
+    /* Surface: Dark Teal Surface #0B3B45 */
+    --surface: 192 73% 15%;
+    --surface-foreground: 0 0% 100%;
+    
+    /* Electric Blue for outlines */
+    --electric: 210 100% 60%;
+    
+    --muted: 192 20% 96%;
+    --muted-foreground: 192 10% 45%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 192 30% 88%;
+    --input: 192 30% 88%;
+    --ring: 174 72% 56%;
+    
+    --radius: 0.75rem;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(174 89% 26%) 0%, hsl(222 84% 11%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(174 72% 56%) 0%, hsl(210 100% 60%) 100%);
+    --gradient-dark: linear-gradient(180deg, hsl(192 100% 4%) 0%, hsl(192 98% 8%) 100%);
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Dark background: #010D11 */
+    --background: 192 100% 4%;
+    --foreground: 0 0% 98%;
+    
+    --card: 192 73% 15%;
+    --card-foreground: 0 0% 98%;
+    
+    --popover: 192 73% 15%;
+    --popover-foreground: 0 0% 98%;
+    
+    --primary: 174 72% 56%;
+    --primary-foreground: 192 100% 4%;
+    
+    --secondary: 192 73% 15%;
+    --secondary-foreground: 0 0% 98%;
+    
+    --accent: 174 72% 56%;
+    --accent-foreground: 192 100% 4%;
+    
+    --muted: 192 73% 15%;
+    --muted-foreground: 192 30% 65%;
+    
+    --destructive: 0 63% 50%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 192 50% 20%;
+    --input: 192 50% 20%;
+    --ring: 174 72% 56%;
   }
 }
 
@@ -100,6 +94,28 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+  }
+}
+
+@layer utilities {
+  .gradient-primary {
+    background: linear-gradient(135deg, hsl(174 89% 26%) 0%, hsl(222 84% 11%) 100%);
+  }
+  
+  .gradient-accent {
+    background: linear-gradient(135deg, hsl(174 72% 56%) 0%, hsl(210 100% 60%) 100%);
+  }
+  
+  .gradient-dark {
+    background: linear-gradient(180deg, hsl(192 100% 4%) 0%, hsl(192 98% 8%) 100%);
+  }
+  
+  .border-electric {
+    border-color: hsl(210 100% 60%);
+  }
+  
+  .text-electric {
+    color: hsl(210 100% 60%);
   }
 }
