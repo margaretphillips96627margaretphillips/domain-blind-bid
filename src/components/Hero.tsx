@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
-import { Search, Shield, Lock, Zap } from "lucide-react";
+import { Shield, Lock, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 
 export default function Hero() {
@@ -60,29 +59,6 @@ export default function Hero() {
             All bids are encrypted end-to-end using FHE technology.
           </motion.p>
 
-          {/* Domain search */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="max-w-2xl mx-auto mb-12"
-          >
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-accent rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-300" />
-              <div className="relative flex gap-2 p-2 bg-background rounded-2xl border-2 border-electric">
-                <Input
-                  type="text"
-                  placeholder="Search for your perfect domain..."
-                  className="flex-1 border-0 bg-transparent text-lg focus-visible:ring-0 focus-visible:ring-offset-0"
-                />
-                <Button size="lg" className="bg-primary hover:bg-primary-light">
-                  <Search className="w-5 h-5 mr-2" />
-                  Search
-                </Button>
-              </div>
-            </div>
-          </motion.div>
-
           {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -90,16 +66,18 @@ export default function Hero() {
             transition={{ delay: 0.7 }}
             className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
           >
-            <Link to="/dapp">
+            <Link to="/auction">
               <Button size="lg" className="bg-primary hover:bg-primary-light text-white">
                 <Lock className="w-5 h-5 mr-2" />
-                Launch DApp
+                Browse Auctions
               </Button>
             </Link>
-            <Button size="lg" variant="outline" className="border-2 border-electric text-electric hover:bg-electric/10">
-              <Zap className="w-5 h-5 mr-2" />
-              Learn More
-            </Button>
+            <Link to="/submit-auction">
+              <Button size="lg" variant="outline" className="border-2 border-electric text-electric hover:bg-electric/10">
+                <Zap className="w-5 h-5 mr-2" />
+                List Your Domain
+              </Button>
+            </Link>
           </motion.div>
 
           {/* Feature highlights */}

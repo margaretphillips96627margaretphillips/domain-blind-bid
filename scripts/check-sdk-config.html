@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Check SDK Config</title>
+</head>
+<body>
+    <h1>Checking FHE SDK Configuration</h1>
+    <pre id="output"></pre>
+
+    <script type="module">
+        const output = document.getElementById('output');
+
+        async function checkConfig() {
+            try {
+                output.textContent += 'Loading SDK from CDN...\n';
+
+                const sdk = await import('https://cdn.zama.ai/relayer-sdk-js/0.2.0/relayer-sdk-js.js');
+                const { SepoliaConfig } = sdk;
+
+                output.textContent += '\n=== Sepolia Config ===\n';
+                output.textContent += JSON.stringify(SepoliaConfig, null, 2);
+
+            } catch (error) {
+                output.textContent += '\nError: ' + error.message;
+            }
+        }
+
+        checkConfig();
+    </script>
+</body>
+</html>

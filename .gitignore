@@ -12,6 +12,41 @@ dist
 dist-ssr
 *.local
 
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Hardhat
+cache/
+artifacts/
+typechain-types/
+types/
+fhevmTemp/
+coverage/
+coverage.json
+
+# Test reports
+test-results/
+playwright-report/
+
+# Temporary files
+temp_*.js
+temp_*.ts
+
+# Temporary documentation files
+AUCTION_*.md
+COMPLETION_*.md
+CONTRACT_*.md
+CREATE_*.md
+DEPLOYMENT_*.md
+ETHERSCAN_*.md
+FHE_*.md
+FINAL_*.md
+HOOKS_*.md
+PROJECT_*.md
+ROUTE_*.md
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

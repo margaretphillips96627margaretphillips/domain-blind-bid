@@ -1,0 +1,757 @@
+{
+  "network": "sepolia",
+  "address": "0x3810B379f781644f65a048D60A28395dCc98c48B",
+  "block": 9530468,
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "initialGatewaySigner",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "DomainVault__AuctionClosed",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DomainVault__BidAlreadyExists",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DomainVault__BidMissing",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DomainVault__DropExists",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DomainVault__DropInactive",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DomainVault__DropUnknown",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DomainVault__DuplicateSalt",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DomainVault__EscrowMissing",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DomainVault__EscrowSettled",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DomainVault__GatewayUnset",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DomainVault__InvalidRecipient",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DomainVault__InvalidSchedule",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DomainVault__RevealAlreadyRecorded",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DomainVault__RevealNotRequested",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DomainVault__Unauthorized",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DomainVault__WinnerPending",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ReentrancyGuardReentrantCall",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "dropId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "bidder",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "saltCommitment",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "additionalEscrow",
+          "type": "uint256"
+        }
+      ],
+      "name": "BidEscalated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "dropId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "bidder",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "saltCommitment",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "escrowedAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "BidSubmitted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "dropId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "DropCancelled",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "dropId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "registrar",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "allowlistOpens",
+          "type": "uint64"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "biddingOpens",
+          "type": "uint64"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "biddingCloses",
+          "type": "uint64"
+        }
+      ],
+      "name": "DropCreated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "dropId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "biddingCloses",
+          "type": "uint64"
+        }
+      ],
+      "name": "DropUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "dropId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "bidder",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "EscrowRefunded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "dropId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "EscrowReleased",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newGateway",
+          "type": "address"
+        }
+      ],
+      "name": "GatewayUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "dropId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "winner",
+          "type": "address"
+        }
+      ],
+      "name": "RevealRecorded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "dropId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "requester",
+          "type": "address"
+        }
+      ],
+      "name": "RevealRequested",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "dropId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "cancelDrop",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "dropId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "registrar",
+          "type": "address"
+        },
+        {
+          "internalType": "uint64",
+          "name": "allowlistOpens",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "biddingOpens",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "biddingCloses",
+          "type": "uint64"
+        },
+        {
+          "internalType": "externalEuint64",
+          "name": "reserve",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes",
+          "name": "reserveProof",
+          "type": "bytes"
+        }
+      ],
+      "name": "createDrop",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "dropId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "externalEuint64",
+          "name": "upgradedBid",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes",
+          "name": "bidProof",
+          "type": "bytes"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "newSaltCommitment",
+          "type": "bytes32"
+        }
+      ],
+      "name": "escalateBid",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "gatewaySigner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "dropId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getDrop",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "registrar",
+              "type": "address"
+            },
+            {
+              "internalType": "uint64",
+              "name": "allowlistOpens",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "biddingOpens",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "biddingCloses",
+              "type": "uint64"
+            },
+            {
+              "internalType": "euint64",
+              "name": "reserveCipher",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bool",
+              "name": "active",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct DomainVaultAuction.DropConfig",
+          "name": "config",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "winner",
+              "type": "address"
+            },
+            {
+              "internalType": "euint64",
+              "name": "winningBidCipher",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bool",
+              "name": "revealRequested",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "revealRecorded",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "escrowSettled",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct DomainVaultAuction.SettlementInfo",
+          "name": "settlement",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "dropId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "bidder",
+          "type": "address"
+        }
+      ],
+      "name": "getEnvelope",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "euint64",
+              "name": "amountCipher",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "saltCommitment",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint256",
+              "name": "escrowedDeposit",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "exists",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "revealed",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct DomainVaultAuction.BidEnvelope",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "dropId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getHighestBid",
+      "outputs": [
+        {
+          "internalType": "euint64",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "dropId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getLeadingBidder",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "protocolId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "dropId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "reclaimEscrow",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "dropId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "winner",
+          "type": "address"
+        },
+        {
+          "internalType": "externalEuint64",
+          "name": "winningBid",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes",
+          "name": "proof",
+          "type": "bytes"
+        }
+      ],
+      "name": "recordReveal",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "registrarAdmin",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "dropId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "releaseEscrow",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "dropId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "requestReveal",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "dropId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "externalEuint64",
+          "name": "encryptedBid",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes",
+          "name": "bidProof",
+          "type": "bytes"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "saltCommitment",
+          "type": "bytes32"
+        }
+      ],
+      "name": "submitBid",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "dropId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint64",
+          "name": "newBiddingCloses",
+          "type": "uint64"
+        }
+      ],
+      "name": "updateDropSchedule",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newGateway",
+          "type": "address"
+        }
+      ],
+      "name": "updateGatewaySigner",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "deployedAt": "2025-10-31T13:58:02.538Z"
+}

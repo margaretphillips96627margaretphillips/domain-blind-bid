@@ -1,14 +1,40 @@
+/**
+ * Auction Page - Main Bidding Interface
+ *
+ * Core auction interface for DomainVault platform.
+ * Displays encrypted bid submission form with real-time stats and user guidance.
+ *
+ * Layout:
+ * - Header: Navigation and wallet connection
+ * - Stats Bar: Live auction metrics (mock data)
+ * - Main Content: Encrypted bid submission form
+ * - Sidebar: FHE explanation and recent bid history
+ *
+ * Features:
+ * - Responsive grid layout (mobile-first design)
+ * - Animated components using Framer Motion
+ * - RainbowKit wallet integration
+ * - Real-time status updates
+ *
+ * @page
+ */
+
 import { motion } from "framer-motion";
 import { ArrowLeft, Shield, Clock, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import DomainBidForm from "@/components/DomainBidForm";
 
-export default function DApp() {
+/**
+ * Auction Page Component
+ * Main interface for encrypted domain bidding
+ */
+export default function Auction() {
   return (
     <div className="min-h-screen gradient-dark">
-      {/* Header */}
+      {/* Header with navigation and wallet connection */}
       <header className="border-b border-border/10 backdrop-blur-sm sticky top-0 z-50 bg-background/80">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
@@ -19,11 +45,9 @@ export default function DApp() {
               </Button>
             </Link>
             <h1 className="text-2xl font-bold bg-gradient-to-r from-accent to-electric bg-clip-text text-transparent">
-              DomainVault DApp
+              Domain Auction
             </h1>
-            <Button className="bg-accent hover:bg-accent/90 text-background">
-              Connect Wallet
-            </Button>
+            <ConnectButton />
           </div>
         </div>
       </header>
