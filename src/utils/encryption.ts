@@ -22,7 +22,14 @@
  * @module encryption
  */
 
-import { getAddress, hexlify } from 'ethers';
+import {
+  getAddress,
+  hexlify,
+  keccak256,
+  toUtf8Bytes,
+  parseEther,
+  formatEther,
+} from 'ethers';
 import { initializeFHE } from './fheInstance';
 
 /**
@@ -147,8 +154,6 @@ export async function encryptMultipleUint64(
  * @returns string Keccak256 hash of the salt
  */
 export function generateSaltCommitment(salt: string): string {
-  // Use ethers keccak256 for salt hashing
-  const { keccak256, toUtf8Bytes } = require('ethers');
   return keccak256(toUtf8Bytes(salt));
 }
 
@@ -194,7 +199,6 @@ export function validateBidAmount(amount: string | number): void {
  * @returns bigint Amount in Wei
  */
 export function ethToWei(ethAmount: string | number): bigint {
-  const { parseEther } = require('ethers');
   return parseEther(ethAmount.toString());
 }
 
@@ -205,6 +209,5 @@ export function ethToWei(ethAmount: string | number): bigint {
  * @returns string Amount in ETH
  */
 export function weiToEth(weiAmount: bigint | string): string {
-  const { formatEther } = require('ethers');
   return formatEther(weiAmount);
 }

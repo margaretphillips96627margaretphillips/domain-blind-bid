@@ -1,0 +1,29 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F766E" />
+      <stop offset="100%" stop-color="#27D3C7" />
+    </linearGradient>
+    <linearGradient id="spark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F9FAFB" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#CFFAFE" stop-opacity="0.8" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="#030712" />
+  <path
+    d="M32 10L48 16V30C48 41.0457 41.4388 50.995 32 54C22.5612 50.995 16 41.0457 16 30V16L32 10Z"
+    fill="url(#grad)"
+  />
+  <path
+    d="M32 18L41 21V30C41 37.0751 37.1486 43.54 32 45.8C26.8514 43.54 23 37.0751 23 30V21L32 18Z"
+    fill="#031E1D"
+    opacity="0.65"
+  />
+  <path
+    d="M24 33L30 38L40 26"
+    stroke="url(#spark)"
+    stroke-width="4"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>

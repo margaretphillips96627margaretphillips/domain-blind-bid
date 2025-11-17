@@ -6,20 +6,10 @@ import "@typechain/hardhat";
 import "hardhat-deploy";
 import "hardhat-gas-reporter";
 import type { HardhatUserConfig } from "hardhat/config";
-import { vars } from "hardhat/config";
 import "solidity-coverage";
 import * as dotenv from "dotenv";
 
-// Load environment variables
 dotenv.config();
-
-// Run 'npx hardhat vars setup' to see the list of variables that need to be set
-const MNEMONIC: string = vars.get(
-  "MNEMONIC",
-  process.env.MNEMONIC || "test test test test test test test test test test test junk"
-);
-const INFURA_API_KEY: string = vars.get("INFURA_API_KEY", process.env.INFURA_API_KEY || "");
-const ETHERSCAN_API_KEY: string = vars.get("ETHERSCAN_API_KEY", process.env.ETHERSCAN_API_KEY || "");
 
 const config: HardhatUserConfig = {
   defaultNetwork: "hardhat",
@@ -27,9 +17,7 @@ const config: HardhatUserConfig = {
     deployer: 0,
   },
   etherscan: {
-    apiKey: {
-      sepolia: ETHERSCAN_API_KEY,
-    },
+    apiKey: process.env.ETHERSCAN_API_KEY || "",
   },
   gasReporter: {
     currency: "USD",
@@ -39,25 +27,27 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       accounts: {
-        mnemonic: MNEMONIC,
+        mnemonic: process.env.MNEMONIC || "test test test test test test test test test test test junk",
       },
       chainId: 31337,
     },
     localhost: {
       accounts: {
-        mnemonic: MNEMONIC,
+        mnemonic: process.env.MNEMONIC || "test test test test test test test test test test test junk",
       },
       chainId: 31337,
       url: "http://127.0.0.1:8545",
     },
     sepolia: {
-      accounts: {
-        mnemonic: MNEMONIC,
-        path: "m/44'/60'/0'/0/",
-        count: 10,
-      },
+      accounts: process.env.SEPOLIA_DEPLOYER_KEY
+        ? [process.env.SEPOLIA_DEPLOYER_KEY]
+        : {
+            mnemonic: process.env.MNEMONIC || "test test test test test test test test test test test junk",
+            path: "m/44'/60'/0'/0/",
+            count: 10,
+          },
       chainId: 11155111,
-      url: process.env.SEPOLIA_RPC_URL || `https://sepolia.infura.io/v3/${INFURA_API_KEY}`,
+      url: process.env.SEPOLIA_RPC_URL || "https://eth-sepolia.g.alchemy.com/v2/demo",
     },
   },
   paths: {
@@ -72,13 +62,11 @@ const config: HardhatUserConfig = {
     version: "0.8.27",
     settings: {
       metadata: {
-        // Not including the metadata hash
         bytecodeHash: "none",
       },
-      // Disable the optimizer when debugging
       optimizer: {
         enabled: true,
-        runs: 800,
+        runs: 200,
       },
       evmVersion: "cancun",
     },

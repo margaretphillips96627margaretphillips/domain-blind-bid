@@ -2,23 +2,39 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DomainVault - Secure Encrypted Domain Auctions</title>
-    <meta name="description" content="Secure your perfect domain with encrypted blind auctions. Front-run protected bidding using FHE technology." />
-    <meta name="author" content="DomainVault" />
 
-    <meta property="og:title" content="DomainVault - Encrypted Domain Auctions" />
-    <meta property="og:description" content="Prevent front-running with FHE-encrypted domain bidding" />
+    <!-- Primary Meta Tags -->
+    <title>DomainVault - FHE-Powered Domain Auctions</title>
+    <meta name="title" content="DomainVault - FHE-Powered Domain Auctions" />
+    <meta name="description" content="Secure your perfect domain with encrypted blind auctions. Front-run protected bidding using Fully Homomorphic Encryption (FHE) technology on Sepolia testnet." />
+    <meta name="author" content="DomainVault Team" />
+    <meta name="keywords" content="FHE, domain auction, blind bidding, blockchain, encrypted, Zama, Sepolia" />
+
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <meta property="og:title" content="DomainVault - FHE-Powered Domain Auctions" />
+    <meta property="og:description" content="Prevent front-running with FHE-encrypted domain bidding. Powered by Zama fhEVM technology." />
+    <meta property="og:site_name" content="DomainVault" />
 
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <meta name="twitter:title" content="DomainVault - FHE-Powered Domain Auctions" />
+    <meta name="twitter:description" content="Secure encrypted domain bidding with FHE technology" />
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#0F766E" />
   </head>
 
   <body>
     <div id="root"></div>
+    <!-- Relayer SDK 0.3.0-5 loaded globally for fheInstance -->
+    <script
+      src="https://cdn.zama.org/relayer-sdk-js/0.3.0-5/relayer-sdk-js.umd.cjs"
+      type="text/javascript"
+      defer
+    ></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

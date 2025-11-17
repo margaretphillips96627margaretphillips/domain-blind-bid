@@ -1,107 +1,80 @@
 /**
- * FHE SDK Instance Management
+ * FHE SDK Instance Management (Browser-only, CDN loaded)
  *
- * Singleton pattern implementation for FHE SDK initialization and management.
- * Uses CDN dynamic import to avoid Vite module resolution errors.
- *
- * Architecture:
- * - CDN-based SDK loading (recommended for Vite projects)
- * - Singleton instance with promise-based initialization guard
- * - SepoliaConfig for testnet deployment
- * - WASM initialization before instance creation
- *
- * IMPORTANT: Never override SepoliaConfig.network - breaks KMS decryption
- *
- * @see https://docs.zama.ai/fhevm
- * @module fheInstance
+ * - SDK 0.3.0-5 通过 index.html 的 script 标签加载到 window 上
+ * - 避免动态 import，完全依赖全局对象 (与 BidExchange 项目一致)
+ * - 仍采用单例模式，所有 hook 共享同一个实例
  */
 
-let fheInstance: any = null;
-let initPromise: Promise<any> | null = null;
+declare global {
+  interface Window {
+    RelayerSDK?: any;
+    relayerSDK?: any;
+    ethereum?: any;
+    okxwallet?: any;
+  }
+}
+
+type FhevmInstance = any;
+
+let fheInstance: FhevmInstance | null = null;
 
 /**
- * Initialize FHE SDK using CDN dynamic import
- * This is the recommended approach for Vite projects to avoid module resolution errors
- *
- * @returns Promise<FheInstance> Initialized FHE instance
- * @throws Error if SDK initialization fails
+ * 从 window 对象获取 Relayer SDK
  */
-export async function initializeFHE(): Promise<any> {
-  // Return existing instance if already initialized
+function getSdkFromWindow() {
+  if (typeof window === 'undefined') {
+    throw new Error('[FHE] Relayer SDK requires a browser environment');
+  }
+
+  const sdk = window.RelayerSDK || window.relayerSDK;
+  if (!sdk) {
+    throw new Error('[FHE] Relayer SDK not loaded. Ensure the CDN script is present in index.html');
+  }
+
+  return sdk;
+}
+
+/**
+ * Initialize FHE SDK (singleton)
+ */
+export async function initializeFHE(provider?: any): Promise<FhevmInstance> {
   if (fheInstance) {
-    console.log('[FHE] Using existing instance');
     return fheInstance;
   }
 
-  // Return pending initialization if in progress
-  if (initPromise) {
-    console.log('[FHE] Waiting for pending initialization');
-    return initPromise;
-  }
+  const sdk = getSdkFromWindow();
+  const { initSDK, createInstance, SepoliaConfig } = sdk;
 
-  console.log('[FHE] Starting SDK initialization...');
+  await initSDK();
 
-  initPromise = (async () => {
-    try {
-      // Dynamically load SDK from CDN
-      // Using version 0.2.0 as specified in FHE guide
-      const sdk = await import('https://cdn.zama.ai/relayer-sdk-js/0.2.0/relayer-sdk-js.js');
-      const { initSDK, createInstance, SepoliaConfig } = sdk;
+  const ethereumProvider =
+    provider ||
+    window.ethereum ||
+    window.okxwallet?.provider ||
+    window.okxwallet ||
+    SepoliaConfig.network;
 
-      console.log('[FHE] SDK loaded, initializing WASM...');
+  const config = {
+    ...SepoliaConfig,
+    network: ethereumProvider,
+  };
 
-      // Initialize WASM module (required before creating instance)
-      await initSDK();
-
-      console.log('[FHE] Creating FHE instance with SepoliaConfig...');
-
-      // Create instance with Sepolia default configuration
-      // IMPORTANT: Do not override 'network' property - it will break KMS decryption
-      fheInstance = await createInstance(SepoliaConfig);
-
-      console.log('[FHE] Instance initialized successfully');
-      console.log('[FHE] Config:', {
-        chainId: SepoliaConfig.chainId,
-        network: SepoliaConfig.network,
-        aclContract: SepoliaConfig.aclContractAddress,
-        kmsContract: SepoliaConfig.kmsContractAddress
-      });
-
-      return fheInstance;
-    } catch (error) {
-      console.error('[FHE] Initialization failed:', error);
-      // Reset state on failure
-      initPromise = null;
-      throw new Error(`FHE initialization failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
-    }
-  })();
-
-  return initPromise;
-}
-
-/**
- * Get the current FHE instance
- *
- * @returns FheInstance | null Current instance or null if not initialized
- */
-export function getFheInstance(): any | null {
+  fheInstance = await createInstance(config);
   return fheInstance;
 }
 
-/**
- * Reset FHE instance (useful for testing or forced re-initialization)
- */
-export function resetFheInstance(): void {
-  console.log('[FHE] Resetting instance');
-  fheInstance = null;
-  initPromise = null;
+export function isFheReady(): boolean {
+  return fheInstance !== null;
 }
 
-/**
- * Check if FHE instance is initialized
- *
- * @returns boolean True if instance is ready
- */
-export function isFheInitialized(): boolean {
-  return fheInstance !== null;
+export function getFheInstance(): FhevmInstance {
+  if (!fheInstance) {
+    throw new Error('[FHE] Instance not initialized. Call initializeFHE() first.');
+  }
+  return fheInstance;
+}
+
+export function resetFheInstance(): void {
+  fheInstance = null;
 }

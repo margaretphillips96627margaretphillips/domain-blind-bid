@@ -1,84 +1,38 @@
 {
   "abi": [
     {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "initialGatewaySigner",
-          "type": "address"
-        }
-      ],
+      "inputs": [],
       "stateMutability": "nonpayable",
       "type": "constructor"
     },
     {
       "inputs": [],
-      "name": "DomainVault__AuctionClosed",
+      "name": "DomainVault__AuctionActive",
       "type": "error"
     },
     {
       "inputs": [],
-      "name": "DomainVault__BidAlreadyExists",
+      "name": "DomainVault__AuctionExists",
       "type": "error"
     },
     {
       "inputs": [],
-      "name": "DomainVault__BidMissing",
+      "name": "DomainVault__AuctionInactive",
       "type": "error"
     },
     {
       "inputs": [],
-      "name": "DomainVault__DropExists",
+      "name": "DomainVault__AuctionUnknown",
       "type": "error"
     },
     {
       "inputs": [],
-      "name": "DomainVault__DropInactive",
+      "name": "DomainVault__BiddingClosed",
       "type": "error"
     },
     {
       "inputs": [],
-      "name": "DomainVault__DropUnknown",
-      "type": "error"
-    },
-    {
-      "inputs": [],
-      "name": "DomainVault__DuplicateSalt",
-      "type": "error"
-    },
-    {
-      "inputs": [],
-      "name": "DomainVault__EscrowMissing",
-      "type": "error"
-    },
-    {
-      "inputs": [],
-      "name": "DomainVault__EscrowSettled",
-      "type": "error"
-    },
-    {
-      "inputs": [],
-      "name": "DomainVault__GatewayUnset",
-      "type": "error"
-    },
-    {
-      "inputs": [],
-      "name": "DomainVault__InvalidRecipient",
-      "type": "error"
-    },
-    {
-      "inputs": [],
-      "name": "DomainVault__InvalidSchedule",
-      "type": "error"
-    },
-    {
-      "inputs": [],
-      "name": "DomainVault__RevealAlreadyRecorded",
-      "type": "error"
-    },
-    {
-      "inputs": [],
-      "name": "DomainVault__RevealNotRequested",
+      "name": "DomainVault__InvalidDuration",
       "type": "error"
     },
     {
@@ -88,338 +42,140 @@
     },
     {
       "inputs": [],
-      "name": "DomainVault__WinnerPending",
-      "type": "error"
-    },
-    {
-      "inputs": [],
       "name": "ReentrancyGuardReentrantCall",
       "type": "error"
     },
     {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "bytes32",
-          "name": "dropId",
-          "type": "bytes32"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "bidder",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "bytes32",
-          "name": "saltCommitment",
-          "type": "bytes32"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "additionalEscrow",
-          "type": "uint256"
-        }
-      ],
-      "name": "BidEscalated",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "bytes32",
-          "name": "dropId",
-          "type": "bytes32"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "bidder",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "bytes32",
-          "name": "saltCommitment",
-          "type": "bytes32"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "escrowedAmount",
-          "type": "uint256"
-        }
-      ],
-      "name": "BidSubmitted",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "bytes32",
-          "name": "dropId",
-          "type": "bytes32"
-        }
-      ],
-      "name": "DropCancelled",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "bytes32",
-          "name": "dropId",
-          "type": "bytes32"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "registrar",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint64",
-          "name": "allowlistOpens",
-          "type": "uint64"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint64",
-          "name": "biddingOpens",
-          "type": "uint64"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint64",
-          "name": "biddingCloses",
-          "type": "uint64"
-        }
-      ],
-      "name": "DropCreated",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "bytes32",
-          "name": "dropId",
-          "type": "bytes32"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint64",
-          "name": "biddingCloses",
-          "type": "uint64"
-        }
-      ],
-      "name": "DropUpdated",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "bytes32",
-          "name": "dropId",
-          "type": "bytes32"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "bidder",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        }
-      ],
-      "name": "EscrowRefunded",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "bytes32",
-          "name": "dropId",
-          "type": "bytes32"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "recipient",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        }
-      ],
-      "name": "EscrowReleased",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "newGateway",
-          "type": "address"
-        }
-      ],
-      "name": "GatewayUpdated",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "bytes32",
-          "name": "dropId",
-          "type": "bytes32"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "winner",
-          "type": "address"
-        }
-      ],
-      "name": "RevealRecorded",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "bytes32",
-          "name": "dropId",
-          "type": "bytes32"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "requester",
-          "type": "address"
-        }
-      ],
-      "name": "RevealRequested",
-      "type": "event"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "dropId",
-          "type": "bytes32"
-        }
-      ],
-      "name": "cancelDrop",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "dropId",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "address",
-          "name": "registrar",
-          "type": "address"
-        },
-        {
-          "internalType": "uint64",
-          "name": "allowlistOpens",
-          "type": "uint64"
-        },
-        {
-          "internalType": "uint64",
-          "name": "biddingOpens",
-          "type": "uint64"
-        },
-        {
-          "internalType": "uint64",
-          "name": "biddingCloses",
-          "type": "uint64"
-        },
-        {
-          "internalType": "externalEuint64",
-          "name": "reserve",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "bytes",
-          "name": "reserveProof",
-          "type": "bytes"
-        }
-      ],
-      "name": "createDrop",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "dropId",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "externalEuint64",
-          "name": "upgradedBid",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "bytes",
-          "name": "bidProof",
-          "type": "bytes"
-        },
-        {
-          "internalType": "bytes32",
-          "name": "newSaltCommitment",
-          "type": "bytes32"
-        }
-      ],
-      "name": "escalateBid",
-      "outputs": [],
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
       "inputs": [],
-      "name": "gatewaySigner",
-      "outputs": [
+      "name": "ZamaProtocolUnsupported",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "auctionId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "seller",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "biddingOpens",
+          "type": "uint64"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint64",
+          "name": "biddingCloses",
+          "type": "uint64"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "domainName",
+          "type": "string"
+        }
+      ],
+      "name": "AuctionCreated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "auctionId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "seller",
+          "type": "address"
+        }
+      ],
+      "name": "AuctionFinalized",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "auctionId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "bidder",
+          "type": "address"
+        }
+      ],
+      "name": "BidPlaced",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "auctionId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "viewer",
+          "type": "address"
+        }
+      ],
+      "name": "ViewGranted",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        },
         {
           "internalType": "address",
           "name": "",
           "type": "address"
+        }
+      ],
+      "name": "canView",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "confidentialProtocolId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -429,23 +185,64 @@
       "inputs": [
         {
           "internalType": "bytes32",
-          "name": "dropId",
+          "name": "auctionId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "string",
+          "name": "domain",
+          "type": "string"
+        },
+        {
+          "internalType": "uint64",
+          "name": "durationSeconds",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint64",
+          "name": "startingBidWei",
+          "type": "uint64"
+        }
+      ],
+      "name": "createAuction",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "auctionId",
           "type": "bytes32"
         }
       ],
-      "name": "getDrop",
+      "name": "finalizeAuction",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "auctionId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getAuction",
       "outputs": [
         {
           "components": [
             {
               "internalType": "address",
-              "name": "registrar",
+              "name": "seller",
               "type": "address"
             },
             {
-              "internalType": "uint64",
-              "name": "allowlistOpens",
-              "type": "uint64"
+              "internalType": "string",
+              "name": "domain",
+              "type": "string"
             },
             {
               "internalType": "uint64",
@@ -458,100 +255,27 @@
               "type": "uint64"
             },
             {
-              "internalType": "euint64",
-              "name": "reserveCipher",
-              "type": "bytes32"
+              "internalType": "uint64",
+              "name": "startingBidWei",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint32",
+              "name": "bidCount",
+              "type": "uint32"
             },
             {
               "internalType": "bool",
-              "name": "active",
+              "name": "ended",
               "type": "bool"
-            }
-          ],
-          "internalType": "struct DomainVaultAuction.DropConfig",
-          "name": "config",
-          "type": "tuple"
-        },
-        {
-          "components": [
-            {
-              "internalType": "address",
-              "name": "winner",
-              "type": "address"
-            },
-            {
-              "internalType": "euint64",
-              "name": "winningBidCipher",
-              "type": "bytes32"
-            },
-            {
-              "internalType": "bool",
-              "name": "revealRequested",
-              "type": "bool"
-            },
-            {
-              "internalType": "bool",
-              "name": "revealRecorded",
-              "type": "bool"
-            },
-            {
-              "internalType": "bool",
-              "name": "escrowSettled",
-              "type": "bool"
-            }
-          ],
-          "internalType": "struct DomainVaultAuction.SettlementInfo",
-          "name": "settlement",
-          "type": "tuple"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "dropId",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "address",
-          "name": "bidder",
-          "type": "address"
-        }
-      ],
-      "name": "getEnvelope",
-      "outputs": [
-        {
-          "components": [
-            {
-              "internalType": "euint64",
-              "name": "amountCipher",
-              "type": "bytes32"
-            },
-            {
-              "internalType": "bytes32",
-              "name": "saltCommitment",
-              "type": "bytes32"
-            },
-            {
-              "internalType": "uint256",
-              "name": "escrowedDeposit",
-              "type": "uint256"
             },
             {
               "internalType": "bool",
               "name": "exists",
               "type": "bool"
-            },
-            {
-              "internalType": "bool",
-              "name": "revealed",
-              "type": "bool"
             }
           ],
-          "internalType": "struct DomainVaultAuction.BidEnvelope",
+          "internalType": "struct DomainVaultAuction.AuctionConfig",
           "name": "",
           "type": "tuple"
         }
@@ -560,14 +284,45 @@
       "type": "function"
     },
     {
+      "inputs": [],
+      "name": "getAuctionIds",
+      "outputs": [
+        {
+          "internalType": "bytes32[]",
+          "name": "",
+          "type": "bytes32[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [
         {
           "internalType": "bytes32",
-          "name": "dropId",
+          "name": "auctionId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "viewer",
+          "type": "address"
+        }
+      ],
+      "name": "grantView",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "auctionId",
           "type": "bytes32"
         }
       ],
-      "name": "getHighestBid",
+      "name": "highestBid",
       "outputs": [
         {
           "internalType": "euint64",
@@ -582,62 +337,12 @@
       "inputs": [
         {
           "internalType": "bytes32",
-          "name": "dropId",
+          "name": "auctionId",
           "type": "bytes32"
-        }
-      ],
-      "name": "getLeadingBidder",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "protocolId",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "dropId",
-          "type": "bytes32"
-        }
-      ],
-      "name": "reclaimEscrow",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "dropId",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "address",
-          "name": "winner",
-          "type": "address"
         },
         {
           "internalType": "externalEuint64",
-          "name": "winningBid",
+          "name": "bidCipher",
           "type": "bytes32"
         },
         {
@@ -646,7 +351,7 @@
           "type": "bytes"
         }
       ],
-      "name": "recordReveal",
+      "name": "placeBid",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -668,85 +373,19 @@
       "inputs": [
         {
           "internalType": "bytes32",
-          "name": "dropId",
+          "name": "auctionId",
           "type": "bytes32"
         }
       ],
-      "name": "releaseEscrow",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
+      "name": "winner",
+      "outputs": [
         {
-          "internalType": "bytes32",
-          "name": "dropId",
+          "internalType": "eaddress",
+          "name": "",
           "type": "bytes32"
         }
       ],
-      "name": "requestReveal",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "dropId",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "externalEuint64",
-          "name": "encryptedBid",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "bytes",
-          "name": "bidProof",
-          "type": "bytes"
-        },
-        {
-          "internalType": "bytes32",
-          "name": "saltCommitment",
-          "type": "bytes32"
-        }
-      ],
-      "name": "submitBid",
-      "outputs": [],
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "dropId",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "uint64",
-          "name": "newBiddingCloses",
-          "type": "uint64"
-        }
-      ],
-      "name": "updateDropSchedule",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "newGateway",
-          "type": "address"
-        }
-      ],
-      "name": "updateGatewaySigner",
-      "outputs": [],
-      "stateMutability": "nonpayable",
+      "stateMutability": "view",
       "type": "function"
     }
   ]

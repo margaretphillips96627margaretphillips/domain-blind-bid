@@ -24,7 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
-import { useAccount } from "wagmi";
+import { useAccount, usePublicClient } from "wagmi";
 import { useNavigate } from "react-router-dom";
 import { keccak256, toUtf8Bytes } from "ethers";
 import { useCreateAuction } from "@/hooks/useDomainVault";
@@ -37,34 +37,15 @@ export default function SubmitAuction() {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { address, isConnected } = useAccount();
-  const {
-    createAuction,
-    isCreating,
-    isEncryptingReserve,
-    isProcessing,
-  } = useCreateAuction();
+  const { createAuction, isPending } = useCreateAuction();
+  const publicClient = usePublicClient();
 
   // Form state
   const [formData, setFormData] = useState({
     domain: "",
     startingBid: "",
-    auctionStartTime: "",  // 拍卖开始时间
-    auctionEndTime: "",    // 拍卖结束时间（竞价截止）
+    durationDays: "7",
   });
-
-  // Calculate durations for smart contract
-  const calculateDurations = () => {
-    if (!formData.auctionStartTime || !formData.auctionEndTime) {
-      return { biddingDuration: 24, revealDuration: 12 };
-    }
-
-    const start = new Date(formData.auctionStartTime).getTime();
-    const end = new Date(formData.auctionEndTime).getTime();
-    const biddingHours = Math.ceil((end - start) / (1000 * 60 * 60));
-    const revealHours = 12; // Fixed reveal duration
-
-    return { biddingDuration: biddingHours, revealDuration: revealHours };
-  };
 
   // Auto-generate emoji based on domain name
   const getEmojiForDomain = (domain: string): string => {
@@ -120,81 +101,50 @@ export default function SubmitAuction() {
     }
 
     try {
-      // Validate time inputs
-      const start = new Date(formData.auctionStartTime);
-      const end = new Date(formData.auctionEndTime);
-      const now = new Date();
-
-      if (start < now) {
+      const durationDays = parseInt(formData.durationDays, 10);
+      if (Number.isNaN(durationDays) || durationDays <= 0) {
         toast({
-          title: "Invalid Start Time",
-          description: "Auction start time must be in the future.",
+          title: "Invalid Duration",
+          description: "Auction duration must be at least 1 day.",
           variant: "destructive",
         });
         return;
       }
 
-      if (end <= start) {
-        toast({
-          title: "Invalid End Time",
-          description: "Auction end time must be after start time.",
-          variant: "destructive",
-        });
-        return;
-      }
+      const durationSeconds = Math.max(durationDays * 24 * 60 * 60, 3600);
 
-      // Calculate timestamps
-      const startTimestamp = Math.floor(start.getTime() / 1000);
-      const endTimestamp = Math.floor(end.getTime() / 1000);
-
-      // Ensure at least 1 hour difference
-      const minDuration = 3600; // 1 hour in seconds
-      if (endTimestamp - startTimestamp < minDuration) {
-        toast({
-          title: "Duration Too Short",
-          description: "Auction must run for at least 1 hour.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Ensure timestamps are strictly ordered for contract
-      if (startTimestamp >= endTimestamp) {
-        toast({
-          title: "Invalid Timestamps",
-          description: "Start timestamp must be strictly less than end timestamp.",
-          variant: "destructive",
-        });
-        return;
+      let referenceTimestamp: number;
+      if (publicClient) {
+        const latestBlock = await publicClient.getBlock({ blockTag: "latest" });
+        referenceTimestamp = Number(latestBlock?.timestamp ?? Math.floor(Date.now() / 1000));
+      } else {
+        referenceTimestamp = Math.floor(Date.now() / 1000);
       }
 
       console.log('[SubmitAuction] Creating auction:', {
         domain: formData.domain,
         startingBid: formData.startingBid,
-        auctionStartTime: formData.auctionStartTime,
-        auctionEndTime: formData.auctionEndTime,
-        startTimestamp,
-        endTimestamp,
+        durationDays,
+        durationSeconds,
       });
 
       // Generate unique drop ID (domain + timestamp + random nonce)
       // This ensures each auction has a unique ID even for the same domain
       const nonce = Math.floor(Math.random() * 1000000);
-      const dropIdInput = `${formData.domain}-${startTimestamp}-${nonce}`;
-      const dropId = keccak256(toUtf8Bytes(dropIdInput));
+      const auctionIdInput = `${formData.domain}-${referenceTimestamp}-${nonce}`;
+      const auctionId = keccak256(toUtf8Bytes(auctionIdInput));
 
-      console.log('[SubmitAuction] Generated dropId:', {
-        input: dropIdInput,
-        hash: dropId,
+      console.log('[SubmitAuction] Generated auctionId:', {
+        input: auctionIdInput,
+        hash: auctionId,
       });
 
       // Call contract
       const txHash = await createAuction(
-        dropId,
+        auctionId as `0x${string}`,
         formData.domain,
+        durationSeconds,
         formData.startingBid,
-        startTimestamp,
-        endTimestamp
       );
 
       console.log('[SubmitAuction] Transaction hash:', txHash);
@@ -209,8 +159,7 @@ export default function SubmitAuction() {
       setFormData({
         domain: "",
         startingBid: "",
-        auctionStartTime: "",
-        auctionEndTime: "",
+        durationDays: "7",
       });
 
       // Navigate to auction list after short delay
@@ -273,7 +222,7 @@ export default function SubmitAuction() {
                       value={formData.domain}
                       onChange={(e) => handleChange("domain", e.target.value)}
                       className="bg-background/50 border-accent/20"
-                      disabled={isProcessing}
+                      disabled={isPending}
                       required
                     />
                     <p className="text-xs text-muted-foreground">
@@ -296,7 +245,7 @@ export default function SubmitAuction() {
                       value={formData.startingBid}
                       onChange={(e) => handleChange("startingBid", e.target.value)}
                       className="bg-background/50 border-accent/20"
-                      disabled={isProcessing}
+                      disabled={isPending}
                       required
                     />
                     <p className="text-xs text-muted-foreground">
@@ -304,45 +253,26 @@ export default function SubmitAuction() {
                     </p>
                   </div>
 
-                  {/* Auction Time Range */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="auctionStartTime" className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4" />
-                        Auction Start Time
-                      </Label>
-                      <Input
-                        id="auctionStartTime"
-                        type="datetime-local"
-                        value={formData.auctionStartTime}
-                        onChange={(e) => handleChange("auctionStartTime", e.target.value)}
-                        className="bg-background/50 border-accent/20"
-                        disabled={isProcessing}
-                        required
-                      />
-                      <p className="text-xs text-muted-foreground">
-                        When bidding begins
-                      </p>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="auctionEndTime" className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4" />
-                        Auction End Time
-                      </Label>
-                      <Input
-                        id="auctionEndTime"
-                        type="datetime-local"
-                        value={formData.auctionEndTime}
-                        onChange={(e) => handleChange("auctionEndTime", e.target.value)}
-                        className="bg-background/50 border-accent/20"
-                        disabled={isProcessing}
-                        required
-                      />
-                      <p className="text-xs text-muted-foreground">
-                        When bidding closes (reveal starts automatically)
-                      </p>
-                    </div>
+                  {/* Auction Duration */}
+                  <div className="space-y-2">
+                    <Label htmlFor="durationDays" className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4" />
+                      Auction Duration (Days)
+                    </Label>
+                    <Input
+                      id="durationDays"
+                      type="number"
+                      min="1"
+                      max="60"
+                      value={formData.durationDays}
+                      onChange={(e) => handleChange("durationDays", e.target.value)}
+                      className="bg-background/50 border-accent/20"
+                      disabled={isPending}
+                      required
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Auctions start a few seconds after submission and run for the specified number of days. Minimum duration is 1 day.
+                    </p>
                   </div>
 
                   {/* Submit Button */}
@@ -359,12 +289,13 @@ export default function SubmitAuction() {
                     <Button
                       type="submit"
                       className="flex-1 bg-primary hover:bg-primary-light gap-2"
-                      disabled={isProcessing}
+                      disabled={isPending}
                     >
-                      {isEncryptingReserve ? (
-                        <>Encrypting reserve...</>
-                      ) : isCreating ? (
-                        <>Submitting...</>
+                      {isPending ? (
+                        <>
+                          <Send className="w-4 h-4 animate-spin" />
+                          Submitting...
+                        </>
                       ) : (
                         <>
                           <Send className="w-4 h-4" />
@@ -376,9 +307,9 @@ export default function SubmitAuction() {
 
                   {/* Info Box */}
                   <div className="p-4 rounded-lg bg-accent/10 border border-accent/20">
-                    <p className="text-sm text-muted-foreground">
-                      <strong className="text-accent">Note:</strong> Once created, the auction cannot be cancelled.
-                      All bids will be encrypted using FHE technology to prevent front-running.
+                <p className="text-sm text-muted-foreground">
+                      <strong className="text-accent">Note:</strong> Once created, the auction starts automatically and cannot be cancelled.
+                      All bids remain encrypted until the reveal window.
                     </p>
                   </div>
                 </form>
@@ -398,10 +329,10 @@ export default function SubmitAuction() {
                 <CardTitle className="text-lg">How It Works</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-sm text-muted-foreground">
-                <p>1. Set auction start and end times</p>
-                <p>2. Bidders submit encrypted bids during the auction period</p>
-                <p>3. After auction ends, bids are automatically revealed (12h)</p>
-                <p>4. Highest bidder wins and receives the domain</p>
+                <p>1. Choose your domain, reserve price, and duration</p>
+                <p>2. Auction begins automatically within a few seconds</p>
+                <p>3. Bidders submit encrypted bids during the duration</p>
+                <p>4. After closing, bids are revealed and the winner is paid</p>
               </CardContent>
             </Card>
 

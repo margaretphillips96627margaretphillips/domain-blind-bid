@@ -9,18 +9,19 @@ const hre = require("hardhat");
  * Saves the deployment info alongside an ABI copy for the frontend bundle.
  */
 async function main() {
-  const gatewaySigner = process.env.DOMAINVAULT_GATEWAY_SIGNER;
-  if (!gatewaySigner) {
-    throw new Error("Missing DOMAINVAULT_GATEWAY_SIGNER in environment");
-  }
-
   console.log("[deploy] Using network:", hre.network.name);
-  console.log("[deploy] Gateway signer:", gatewaySigner);
+
+  const [deployer] = await hre.ethers.getSigners();
+  console.log("[deploy] Deploying with account:", deployer.address);
+
+  const balance = await hre.ethers.provider.getBalance(deployer.address);
+  console.log("[deploy] Account balance:", hre.ethers.formatEther(balance), "ETH");
 
   const factory = await hre.ethers.getContractFactory("DomainVaultAuction");
   console.log("[deploy] Deploying contract...");
 
-  const contract = await factory.deploy(gatewaySigner);
+  // Contract constructor takes no parameters
+  const contract = await factory.deploy();
   console.log("[deploy] Waiting for deployment...");
 
   await contract.waitForDeployment();
