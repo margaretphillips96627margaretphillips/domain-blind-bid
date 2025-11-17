@@ -11,6 +11,10 @@ Only the gateway (and later the seller) can decrypt the results once the auction
 - **Seller Controls Access** - the seller decides who can decrypt the winning ciphertext after settlement.  
 - **Modern Frontend Stack** - React + Vite + TypeScript, Wagmi/RainbowKit for wallet UX, Tailwind + shadcn/ui for styling.
 
+## Live Demo
+
+- Production: https://domainvault-fhe.vercel.app
+
 ## Architecture
 
 ### Smart Contract (`contracts/DomainVaultAuction_v2.sol`)

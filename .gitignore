@@ -57,3 +57,4 @@ ROUTE_*.md
 *.njsproj
 *.sln
 *.sw?
+.vercel
