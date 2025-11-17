@@ -11,12 +11,12 @@ import { getContractAddress } from '@/config/wagmi';
 /**
  * DomainVault Auction Hooks (fhEVM 0.9.x + Relayer 0.3.0-5)
  *
- *  - useAuctionIds / useAuctionInfo 读取拍卖列表与详情
- *  - useCreateAuction 管理员创建拍卖
- *  - usePlaceBid 提交加密出价
- *  - useFinalizeAuction 结束拍卖
- *  - useGrantView 授权查看密文结果
- *  - useEncryptedResult 获取最高价/赢家的密文
+ *  - useAuctionIds / useAuctionInfo fetch auction lists and details
+ *  - useCreateAuction allows admins to create new auctions
+ *  - usePlaceBid submits encrypted bids
+ *  - useFinalizeAuction finalizes auctions
+ *  - useGrantView grants access to ciphertext results
+ *  - useEncryptedResult fetches encrypted highest bid / winner handles
  */
 
 const DOMAIN_VAULT_ABI = [
@@ -123,7 +123,7 @@ function ensureContract(chainId?: number) {
 }
 
 /**
- * 读取全部拍卖 ID
+ * Read all auction IDs
  */
 export function useAuctionIds() {
   const { chainId } = useAccount();
@@ -171,7 +171,7 @@ export function useAuctionIds() {
 }
 
 /**
- * 读取单个拍卖详情
+ * Fetch the details of a single auction ID
  */
 export function useAuctionInfo(auctionId?: `0x${string}`) {
   const { chainId } = useAccount();
@@ -231,7 +231,7 @@ export function useAuctionInfo(auctionId?: `0x${string}`) {
 }
 
 /**
- * 管理员创建拍卖
+ * Admin hook for creating auctions
  */
 export function useCreateAuction() {
   const { address, chainId } = useAccount();
@@ -291,7 +291,7 @@ export function useCreateAuction() {
 }
 
 /**
- * 提交加密出价
+ * Submit encrypted bids
  */
 export function usePlaceBid() {
   const { address, chainId } = useAccount();
@@ -355,7 +355,7 @@ export function usePlaceBid() {
 }
 
 /**
- * 结束拍卖
+ * Finalize auction helper
  */
 export function useFinalizeAuction() {
   const { chainId } = useAccount();
@@ -406,7 +406,7 @@ export function useFinalizeAuction() {
 }
 
 /**
- * 授权查看密文结果
+ * Grant access to ciphertext result
  */
 export function useGrantView() {
   const { chainId } = useAccount();
@@ -457,7 +457,7 @@ export function useGrantView() {
 }
 
 /**
- * 读取最高价/赢家的密文
+ * Read highest bid / winner ciphertext
  */
 export function useEncryptedResult(auctionId?: `0x${string}`, enabled: boolean = true) {
   const { chainId } = useAccount();
@@ -521,7 +521,7 @@ export function useEncryptedResult(auctionId?: `0x${string}`, enabled: boolean =
 }
 
 /**
- * 无钱包的公共读取客户端（SSR/回退）
+ * Public read-only client helper (SSR/fallback)
  */
 export function usePublicAuctionClient() {
   const [client] = useState(() =>

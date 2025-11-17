@@ -1,5 +1,5 @@
 /**
- * Auction List Page - 基于 0.9.x 合约的简化拍卖列表
+ * Auction List Page - simplified list for fhEVM 0.9.x contract.
  */
 
 import { useMemo, useState } from 'react';
@@ -33,7 +33,7 @@ function AuctionCard({ auction, isOwner }: AuctionCardProps) {
     <Card className="border-accent/20 bg-surface/30 backdrop-blur hover:border-accent/40 transition-all hover:shadow-lg hover:shadow-accent/10 h-full flex flex-col">
       <CardHeader>
         <div className="flex items-start justify-between mb-2">
-          <div className="text-4xl">🌐</div>
+          <div className="text-2xl font-semibold text-accent">DV</div>
           <div className="flex flex-col gap-2 items-end">
             <Badge variant="outline" className={`gap-1 ${statusBadge.color}`}>
               <Shield className="w-3 h-3" />

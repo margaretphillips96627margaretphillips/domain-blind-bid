@@ -18,17 +18,17 @@ https.get(url, (res) => {
 
     console.log("\n=== Deployment Status ===");
     if (result.result && result.result !== '0x') {
-      console.log("✅ Contract is deployed!");
+      console.log("[Status] Contract is deployed!");
       console.log("Code length:", result.result.length, "characters");
-      console.log("\n✅ You can now test creating an auction!");
+      console.log("\n[Status] You can now test creating an auction!");
       console.log("   Frontend URL: http://localhost:8080");
-      console.log("\n📝 Next steps:");
+      console.log("\n[Status] Next steps:");
       console.log("   1. Open http://localhost:8080");
       console.log("   2. Connect your wallet (0x53f8...4ebc)");
       console.log("   3. Go to Create Auction page");
       console.log("   4. Try creating a test auction!");
     } else {
-      console.log("⏳ Contract not yet visible on Etherscan");
+      console.log("[Status] Contract not yet visible on Etherscan");
       console.log("   This is normal - please wait 1-2 minutes");
       console.log("   The contract was deployed in block 9530388");
     }

@@ -17,7 +17,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
-  console.log("\n📦 Deploying DomainVaultAuction...");
+  console.log("\n[Deploy] Deploying DomainVaultAuction...");
   console.log("Network:", hre.network.name);
   console.log("Deployer:", deployer);
 
@@ -30,7 +30,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     waitConfirmations: hre.network.name === "sepolia" ? 5 : 1,
   });
 
-  console.log("\n✅ DomainVaultAuction deployed:");
+  console.log("\n[Deploy] DomainVaultAuction deployed:");
   console.log("   Address:", deployment.address);
   console.log("   Transaction:", deployment.transactionHash);
   console.log("   Block:", deployment.receipt?.blockNumber);
@@ -38,18 +38,18 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   // Verify on Etherscan if on Sepolia
   if (hre.network.name === "sepolia" && process.env.ETHERSCAN_API_KEY) {
-    console.log("\n🔍 Verifying contract on Etherscan...");
+    console.log("\n[Verify] Verifying contract on Etherscan...");
     try {
       await hre.run("verify:verify", {
         address: deployment.address,
         constructorArguments: [],
       });
-      console.log("✅ Contract verified on Etherscan");
+      console.log("[Verify] Contract verified on Etherscan");
     } catch (error) {
       if (error instanceof Error && error.message.includes("Already Verified")) {
-        console.log("✅ Contract already verified");
+        console.log("[Verify] Contract already verified");
       } else {
-        console.error("❌ Verification failed:", error);
+        console.error("[Verify] Verification failed:", error);
       }
     }
   }
@@ -65,7 +65,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const abiFile = path.join(abiDir, "DomainVaultAuction.json");
   fs.writeFileSync(abiFile, JSON.stringify({ abi: artifact.abi }, null, 2));
 
-  console.log("\n📝 ABI exported to:", abiFile);
+  console.log("\n[Deploy] ABI exported to:", abiFile);
 
   // Update .env with new contract address
   if (hre.network.name === "sepolia") {
@@ -84,10 +84,10 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       }
 
       fs.writeFileSync(envPath, envContent);
-      console.log("\n✅ Updated .env with contract address:");
+      console.log("\n[Deploy] Updated .env with contract address:");
       console.log(`   VITE_CONTRACT_ADDRESS=${deployment.address}`);
     } catch (error) {
-      console.log("\n⚠️  Please manually update .env with:");
+      console.log("\n[Deploy] Please manually update .env with:");
       console.log(`VITE_CONTRACT_ADDRESS=${deployment.address}`);
     }
   }

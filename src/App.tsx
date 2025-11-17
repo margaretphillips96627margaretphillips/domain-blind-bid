@@ -1,5 +1,5 @@
 /**
- * DomainVault Application Root Component - BidExchange简化风格
+ * DomainVault Application Root Component - BidExchange-style lightweight setup
  *
  * Main application entry point that sets up the provider hierarchy:
  * 1. WagmiProvider - Web3 wallet and network management
@@ -7,8 +7,8 @@
  * 3. RainbowKitProvider - Wallet connection UI (Coinbase disabled)
  * 4. TooltipProvider - UI tooltip support
  *
- * 注意: 移除了FheProvider,采用BidExchange的简化架构
- * FHE SDK通过CDN加载到window对象,按需在组件中初始化
+ * Note: We removed the previous FheProvider; FHE SDK is loaded from the CDN and
+ * initialized lazily inside hooks/components when required.
  *
  * Route Structure:
  * - / : Landing page with project introduction
@@ -49,8 +49,8 @@ const queryClient = new QueryClient({
 });
 
 /**
- * App Component - BidExchange简化架构
- * 移除FheProvider,FHE SDK按需在组件中初始化
+ * App Component - BidExchange-style minimal architecture
+ * FHE SDK is initialized on demand; no global provider is required.
  */
 const App = () => (
   <WagmiProvider config={wagmiConfig}>

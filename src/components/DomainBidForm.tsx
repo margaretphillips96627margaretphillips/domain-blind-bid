@@ -132,7 +132,7 @@ export default function DomainBidForm({ domainName: propDomainName, auctionId }:
                 rel="noopener noreferrer"
                 className="text-sm text-accent hover:underline"
               >
-                View on Etherscan →
+                View on Etherscan &rarr;
               </a>
             </div>
           )}

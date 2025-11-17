@@ -17,7 +17,7 @@ async function main() {
   const gatewaySigner = process.env.DOMAINVAULT_GATEWAY_SIGNER;
 
   if (!contractAddress) {
-    console.error("❌ Error: Contract address is required");
+    console.error("[Verify] Error: Contract address is required");
     console.log("\nUsage:");
     console.log("  node scripts/verify-contract.js <CONTRACT_ADDRESS>");
     console.log("\nOr set VITE_CONTRACT_ADDRESS in .env file");
@@ -25,17 +25,17 @@ async function main() {
   }
 
   if (!gatewaySigner) {
-    console.error("❌ Error: Gateway signer address is required");
+    console.error("[Verify] Error: Gateway signer address is required");
     console.log("\nSet DOMAINVAULT_GATEWAY_SIGNER in .env file");
     process.exit(1);
   }
 
-  console.log("\n🔍 Verifying contract on Etherscan...");
-  console.log("━".repeat(50));
-  console.log(`📝 Contract Address: ${contractAddress}`);
-  console.log(`🔑 Gateway Signer:   ${gatewaySigner}`);
-  console.log(`🌐 Network:          Sepolia`);
-  console.log("━".repeat(50));
+  console.log("\n[Verify] Verifying contract on Etherscan...");
+  console.log("-".repeat(50));
+  console.log(`Contract Address: ${contractAddress}`);
+  console.log(`Gateway Signer:   ${gatewaySigner}`);
+  console.log(`Network:          Sepolia`);
+  console.log("-".repeat(50));
 
   try {
     await hre.run("verify:verify", {
@@ -44,14 +44,14 @@ async function main() {
       contract: "contracts/DomainVaultAuction.sol:DomainVaultAuction"
     });
 
-    console.log("\n✅ Contract verified successfully!");
-    console.log(`🔗 View on Etherscan: https://sepolia.etherscan.io/address/${contractAddress}#code`);
+    console.log("\n[Verify] Contract verified successfully!");
+    console.log(`View on Etherscan: https://sepolia.etherscan.io/address/${contractAddress}#code`);
   } catch (error) {
     if (error.message.includes("Already Verified")) {
-      console.log("\n✅ Contract is already verified!");
-      console.log(`🔗 View on Etherscan: https://sepolia.etherscan.io/address/${contractAddress}#code`);
+      console.log("\n[Verify] Contract is already verified!");
+      console.log(`View on Etherscan: https://sepolia.etherscan.io/address/${contractAddress}#code`);
     } else {
-      console.error("\n❌ Verification failed:", error.message);
+      console.error("\n[Verify] Verification failed:", error.message);
       process.exit(1);
     }
   }

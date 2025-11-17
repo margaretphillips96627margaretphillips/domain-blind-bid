@@ -49,10 +49,9 @@ export default function SubmitAuction() {
 
   // Auto-generate emoji based on domain name
   const getEmojiForDomain = (domain: string): string => {
-    const emojis = ["🔐", "🌐", "💰", "🎨", "🏛️", "🌌", "⚡", "🔥", "💎", "🚀"];
-    // Simple hash to get consistent emoji for same domain
+    const badges = ["DV", "WEB", "DNS", "FHE", "ETH", "NET", "AUC", "BID", "PRO", "HUB"];
     const hash = domain.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    return emojis[hash % emojis.length];
+    return badges[hash % badges.length];
   };
 
   // Auto-generate description if not provided
@@ -79,7 +78,7 @@ export default function SubmitAuction() {
     if (!isConnected || !address) {
       toast({
         title: "Wallet Required",
-        description: "请先连接具有管理员权限的钱包后再创建拍卖。",
+        description: "Connect the admin wallet before creating a new auction.",
         variant: "destructive",
       });
       return;
@@ -200,9 +199,9 @@ export default function SubmitAuction() {
                     <p className="text-sm font-medium mb-1">Connected Wallet:</p>
                     <p className="text-xs font-mono text-accent">{address}</p>
                     {address.toLowerCase() === "0x53f82210204EE87a485E288E0644E195360F4EBc".toLowerCase() ? (
-                      <p className="text-xs text-green-400 mt-1">✅ Authorized to create auctions</p>
+                      <p className="text-xs text-green-400 mt-1">Authorized to create auctions</p>
                     ) : (
-                      <p className="text-xs text-red-400 mt-1">❌ Not authorized - switch to 0x53f8...4ebc</p>
+                      <p className="text-xs text-red-400 mt-1">Not authorized - switch to 0x53f8...4ebc</p>
                     )}
                   </div>
                 )}
@@ -341,10 +340,10 @@ export default function SubmitAuction() {
                 <CardTitle className="text-lg">Fees & Payments</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-sm text-muted-foreground">
-                <p>• No listing fee required</p>
-                <p>• 2.5% platform fee on final sale</p>
-                <p>• Payment received after reveal phase</p>
-                <p>• Gas fees apply for transactions</p>
+                <p>- No listing fee required</p>
+                <p>- 2.5% platform fee on final sale</p>
+                <p>- Payment received after reveal phase</p>
+                <p>- Gas fees apply for transactions</p>
               </CardContent>
             </Card>
           </motion.div>

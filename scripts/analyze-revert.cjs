@@ -68,11 +68,11 @@ async function main() {
           // Try to decode the error
           try {
             const decoded = iface.parseError(error.data);
-            console.log("\n✅ Decoded Error:");
+            console.log("\n[Logs] Decoded Error:");
             console.log("  Name:", decoded.name);
             console.log("  Args:", decoded.args);
           } catch (decodeErr) {
-            console.log("\n❌ Could not decode error data");
+            console.log("\n[Logs] Could not decode error data");
 
             // Try to match error selector
             const selector = error.data.slice(0, 10);
@@ -83,7 +83,7 @@ async function main() {
             errors.forEach(err => {
               const fragment = iface.fragments[err];
               const errorSelector = hre.ethers.id(fragment.format()).slice(0, 10);
-              const match = errorSelector === selector ? "✅ MATCH" : "";
+              const match = errorSelector === selector ? "MATCH" : "";
               console.log(`  ${fragment.name}: ${errorSelector} ${match}`);
             });
           }

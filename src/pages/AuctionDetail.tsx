@@ -1,5 +1,5 @@
 /**
- * Auction Detail Page - 0.9.x 拍卖详情 + 加密出价
+ * Auction Detail Page - fhEVM 0.9.x sealed-bid detail view.
  */
 
 import { useEffect, useState } from 'react';
@@ -92,7 +92,7 @@ export default function AuctionDetail() {
               <Card className="border-accent/20 bg-surface/30 backdrop-blur">
                 <CardHeader>
                   <div className="flex items-start justify-between mb-4">
-                    <div className="text-6xl">🌐</div>
+                    <div className="text-4xl font-semibold tracking-wide text-accent">DV</div>
                     <Badge variant="outline" className={`gap-1 ${statusBadge.color}`}>
                       <Shield className="w-3 h-3" />
                       {statusBadge.label}
@@ -200,7 +200,7 @@ export default function AuctionDetail() {
             <Card className="border-accent/20 bg-surface/30 backdrop-blur">
               <CardHeader>
                 <CardTitle className="text-lg">Settlement & Ciphertexts</CardTitle>
-                <CardDescription>仅卖家可执行结算或授权查看</CardDescription>
+                <CardDescription>Only the seller can finalize or grant view access</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {encryptedError && (
@@ -212,11 +212,11 @@ export default function AuctionDetail() {
                 )}
                 <div className="space-y-1">
                   <p className="text-xs text-muted-foreground">Highest Bid (ciphertext)</p>
-                  <p className="text-xs font-mono break-all">{highestBid || '—'}</p>
+                  <p className="text-xs font-mono break-all">{highestBid || '--'}</p>
                 </div>
                 <div className="space-y-1">
                   <p className="text-xs text-muted-foreground">Winner (ciphertext)</p>
-                  <p className="text-xs font-mono break-all">{winner || '—'}</p>
+                  <p className="text-xs font-mono break-all">{winner || '--'}</p>
                 </div>
 
                 {address && address.toLowerCase() === auction.seller.toLowerCase() && (
@@ -226,7 +226,7 @@ export default function AuctionDetail() {
                       disabled={isFinalizing || auction.ended || auction.status !== 'ended'}
                       onClick={() => finalize(auction.auctionId)}
                     >
-                      {auction.ended ? 'Already finalized' : isFinalizing ? 'Finalizing…' : 'Finalize Auction'}
+                      {auction.ended ? 'Already finalized' : isFinalizing ? 'Finalizing...' : 'Finalize Auction'}
                     </Button>
 
                     <div className="space-y-2">
@@ -242,7 +242,7 @@ export default function AuctionDetail() {
                         disabled={isGranting || !viewerAddress}
                         onClick={() => grantView(auction.auctionId, viewerAddress as `0x${string}`)}
                       >
-                        {isGranting ? 'Granting…' : 'Grant View Access'}
+                        {isGranting ? 'Granting...' : 'Grant View Access'}
                       </Button>
                     </div>
                   </div>
